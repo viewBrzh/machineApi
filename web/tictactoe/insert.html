@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insert TicTacToe Record</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Tic Tac Toe Insert</h1>
+        <form id="insertForm">
+            <!-- Input fields for Tic Tac Toe game data -->
+            <div class="form-group">
+                <label for="top_left_square">Top Left Square</label>
+                <input type="text" class="form-control" id="top_left_square" name="top_left_square" required>
+            </div>
+            <div class="form-group">
+                <label for="top_middle_square">Top Middle Square</label>
+                <input type="text" class="form-control" id="top_middle_square" name="top_middle_square" required>
+            </div>
+            <div class="form-group">
+                <label for="top_right_square">Top Right Square</label>
+                <input type="text" class="form-control" id="top_right_square" name="top_right_square" required>
+            </div>
+            <div class="form-group">
+                <label for="middle_left_square">Middle Left Square</label>
+                <input type="text" class="form-control" id="middle_left_square" name="middle_left_square" required>
+            </div>
+            <div class="form-group">
+                <label for="middle_middle_square">Middle Middle Square</label>
+                <input type="text" class="form-control" id="middle_middle_square" name="middle_middle_square" required>
+            </div>
+            <div class="form-group">
+                <label for="middle_right_square">Middle Right Square</label>
+                <input type="text" class="form-control" id="middle_right_square" name="middle_right_square" required>
+            </div>
+            <div class="form-group">
+                <label for="bottom_left_square">Bottom Left Square</label>
+                <input type="text" class="form-control" id="bottom_left_square" name="bottom_left_square" required>
+            </div>
+            <div class="form-group">
+                <label for="bottom_middle_square">Bottom Middle Square</label>
+                <input type="text" class="form-control" id="bottom_middle_square" name="bottom_middle_square" required>
+            </div>
+            <div class="form-group">
+                <label for="bottom_right_square">Bottom Right Square</label>
+                <input type="text" class="form-control" id="bottom_right_square" name="bottom_right_square" required>
+            </div>
+            <div class="form-group">
+                <label for="class_">Class</label>
+                <input type="number" class="form-control" id="class_" name="class_" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary mt-2">Insert Outcome</button>
+        </form>
+        <div id="insertResult" class="mt-4"></div>
+    </div>
+    
+
+    <script>
+        const insertForm = document.getElementById('insertForm');
+        insertForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData(insertForm);
+
+            const response = await fetch('/tictactoe/', {
+                method: 'POST',
+                body: JSON.stringify(Object.fromEntries(formData.entries())),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                // Handle success, redirect or show a message
+                window.location.href = `/tictactoe_view/index`;
+            } else {
+                // Handle error
+            }
+        });
+    </script>
+</body>
+</html>

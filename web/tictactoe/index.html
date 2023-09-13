@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe Records</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Tic Tac Toe Records</h1>
+        <a href="/tictactoe_view/insert" class="btn btn-primary mt-2">Add New Record</a>
+        <a href="/tictactoe_view/predict" class="btn btn-primary mt-2">Predict</a>
+        <div class="row mt-4">
+            <div class="col">
+                <h2>Game Records</h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Top Left Square</th>
+                                <th>Top Middle Square</th>
+                                <th>Top Right Square</th>
+                                <th>Middle Left Square</th>
+                                <th>Middle Middle Square</th>
+                                <th>Middle Right Square</th>
+                                <th>Bottom Left Square</th>
+                                <th>Bottom Middle Square</th>
+                                <th>Bottom Right Square</th>
+                                <th>Class</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gameTableBody">
+                            <!-- Data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function deleteRecord(recordId) {
+            const response = await fetch(`/tictactoe/${recordId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                window.location.href = `/tictactoe_view/index`;
+            } else {
+                // Handle error
+            }
+        }
+
+        function confirmDelete(recordId) {
+            if (confirm('Are you sure you want to delete this record?')) {
+                // User confirmed, proceed with deletion
+                deleteRecord(recordId);
+            }
+        }
+
+        async function fetchGameRecords() {
+            const response = await fetch('/tictactoe/');
+            const data = await response.json();
+
+            const gameTableBody = document.getElementById('gameTableBody');
+            gameTableBody.innerHTML = '';
+
+            data.forEach(record => {
+                gameTableBody.innerHTML += `
+                    <tr>
+                        <td>${record.id}</td>
+                        <td>${record['top_left_square']}</td>
+                        <td>${record['top_middle_square']}</td>
+                        <td>${record['top_right_square']}</td>
+                        <td>${record['middle_left_square']}</td>
+                        <td>${record['middle_middle_square']}</td>
+                        <td>${record['middle_right_square']}</td>
+                        <td>${record['bottom_left_square']}</td>
+                        <td>${record['bottom_middle_square']}</td>
+                        <td>${record['bottom_right-square']}</td>
+                        <td>${record.Class}</td>
+                        <td>
+                            <a href="/tictactoe_view/update?id=${record.id}" class="btn btn-sm btn-info">Edit</a>
+                            <button class="btn btn-sm btn-danger" onclick="confirmDelete(${record.id})">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        fetchGameRecords();
+    </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Telecom Churn Record</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Tic Tac Toe Prediction</h1>
+        <form id="updateForm">
+            <!-- Input fields for Tic Tac Toe game data -->
+            <div class="form-group">
+                <label for="top_left_square">Top Left Square</label>
+                <input type="text" class="form-control" id="top_left_square" name="top_left_square" required>
+            </div>
+            <div class="form-group">
+                <label for="top_middle_square">Top Middle Square</label>
+                <input type="text" class="form-control" id="top_middle_square" name="top_middle_square" required>
+            </div>
+            <div class="form-group">
+                <label for="top_right_square">Top Right Square</label>
+                <input type="text" class="form-control" id="top_right_square" name="top_right_square" required>
+            </div>
+            <div class="form-group">
+                <label for="middle_left_square">Middle Left Square</label>
+                <input type="text" class="form-control" id="middle_left_square" name="middle_left_square" required>
+            </div>
+            <div class="form-group">
+                <label for="middle_middle_square">Middle Middle Square</label>
+                <input type="text" class="form-control" id="middle_middle_square" name="middle_middle_square" required>
+            </div>
+            <div class="form-group">
+                <label for="middle_right_square">Middle Right Square</label>
+                <input type="text" class="form-control" id="middle_right_square" name="middle_right_square" required>
+            </div>
+            <div class="form-group">
+                <label for="bottom_left_square">Bottom Left Square</label>
+                <input type="text" class="form-control" id="bottom_left_square" name="bottom_left_square" required>
+            </div>
+            <div class="form-group">
+                <label for="bottom_middle_square">Bottom Middle Square</label>
+                <input type="text" class="form-control" id="bottom_middle_square" name="bottom_middle_square" required>
+            </div>
+            <div class="form-group">
+                <label for="bottom_right_square">Bottom Right Square</label>
+                <input type="text" class="form-control" id="bottom_right_square" name="bottom_right_square" required>
+            </div>
+            <div class="form-group">
+                <label for="class_">Class</label>
+                <input type="number" class="form-control" id="class_" name="class_" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary mt-2">Predict Outcome</button>
+        </form>
+        <div id="updateResult" class="mt-4"></div>
+    </div>
+
+    <script>
+        const updateForm = document.getElementById('updateForm');
+        const recordIdField = document.getElementById('recordId');
+        
+        // Extract record ID from URL query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const recordId = urlParams.get('id');
+        
+        // Fill the hidden input field with the record ID
+        recordIdField.value = recordId;
+        
+        // Fetch and populate data for the record
+        async function populateFormData() {
+            const response = await fetch(`/tictactoe_data/${recordId}`);
+            if (response.ok) {
+                const data = await response.json();
+                
+                // Populate the form fields with Tic Tac Toe game data
+                document.getElementById('top_left_square').value = data.top_left_square;
+                document.getElementById('top_middle_square').value = data.top_middle_square;
+                document.getElementById('top_right_square').value = data.top_right_square;
+                document.getElementById('middle_left_square').value = data.middle_left_square;
+                document.getElementById('middle_middle_square').value = data.middle_middle_square;
+                document.getElementById('middle_right_square').value = data.middle_right_square;
+                document.getElementById('bottom_left_square').value = data.bottom_left_square;
+                document.getElementById('bottom_middle_square').value = data.bottom_middle_square;
+                document.getElementById('bottom_right_square').value = data.bottom_right_square;
+                // Add more fields as needed
+                
+            } else {
+                // Handle error
+            }
+        }
+    
+        updateForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+    
+            const formData = new FormData(updateForm);
+    
+            const response = await fetch(`/tictactoe/${recordId}`, {
+                method: 'PUT',
+                body: JSON.stringify(Object.fromEntries(formData.entries())),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+    
+            if (response.ok) {
+                // Handle success, redirect or show a message
+                window.location.href = `/tictactoe_view/index`;
+            } else {
+                // Handle error
+            }
+        });
+    
+        // Populate the form fields with existing data when the page loads
+        populateFormData();
+    </script>
+    
+</body>
+</html>
