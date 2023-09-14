@@ -54,11 +54,32 @@
         </form>
         <div id="predictionResult" class="mt-4"></div>
     </div>
+
+    <!-- Popup HTML -->
+    <div class="modal" id="responsePopup" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Submission Result</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="popupResult">
+                    <!-- Response content will be displayed here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
 
     <script>
         const predictionForm = document.getElementById('predictionForm');
         const predictionResult = document.getElementById('predictionResult');
+        const popupResult = document.getElementById('popupResult');
 
         predictionForm.addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -81,13 +102,15 @@
             }
         });
 
-        function displayPredictionResult(result) {
-            const jsonString = JSON.stringify(result, null, 4);
+        function displaySubmissionResult(result) {
+            const predictedQuality = result.class_;
 
-            predictionResult.innerHTML = `
-                <h2>Prediction Result (JSON)</h2>
-                <pre>${jsonString}</pre>
+            popupResult.innerHTML = `
+                <h2>Submission Result</h2>
+                <p>Predicted Quality: ${predictedQuality}</p>
             `;
+
+            responsePopup.style.display = 'block';
         }
 
     </script>
